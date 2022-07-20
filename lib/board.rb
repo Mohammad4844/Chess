@@ -1,4 +1,5 @@
 require_relative 'initial_setup'
+require 'io/console'
 require_relative 'colorize'
 
 class Board
@@ -60,14 +61,20 @@ end
 board = Board.new
 puts board
 board.set_current_piece(0,1)
-puts board
 board.move_current_piece(0, 3)
 puts board
 
-board.set_current_piece(0,0)
+board.set_current_piece(3,0)
 puts board
-board.move_current_piece(2, 3)
+board.move_current_piece(3, 2)
 puts board
-board.set_current_piece(2, 3)
+
+board.set_current_piece(3,2)
 puts board
+
+
+
+
+# $stdout.clear_screen
+
 

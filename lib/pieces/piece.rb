@@ -14,7 +14,9 @@ class Piece
     @point_value = point_value
   end
 
-  def update_possible_moves(coordinates = @coordinates); end
+  def same_team?(other)
+    self.team == other.team
+  end
 
   def different_team?(other)
     self.team != other.team && self.team != '' && other.team != ''

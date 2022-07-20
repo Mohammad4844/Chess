@@ -1,6 +1,9 @@
 require_relative 'piece'
+require_relative 'slidable'
 
 class Queen < Piece
+  include Slidable
+
   def initialize(team, x, y)
     super(team, x, y, 9)
   end
