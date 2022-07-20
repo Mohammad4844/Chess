@@ -1,5 +1,4 @@
 require_relative 'initial_setup'
-require 'io/console'
 require_relative 'colorize'
 
 class Board
@@ -7,29 +6,36 @@ class Board
 
   attr_accessor :spaces, :current_piece
 
-  def initialize
-    @spaces = setup_board
+  def initialize(spaces = setup_board)
+    @spaces = spaces
     @current_piece = nil
   end
 
-  def set_current_piece(x, y)
+  def self.code_to_coordinates(code)
+    [code[0].ord - 97, code[1].to_i - 1]
+   end
+
+  def set_current_piece((x, y))
     @current_piece = @spaces[x][y]
   end
 
-  def move_current_piece(x, y)
+  def move_current_piece((x, y))
     @spaces[@current_piece.x][@current_piece.y] = NoPiece.new(@current_piece.x, @current_piece.y)
     @spaces[x][y] = @current_piece
     @spaces[x][y].x = x; @spaces[x][y].y = y
     remove_current_piece
   end
 
-  def legal_move?(x, y)
-    @current_piece.possible_moves(@spaces).include?([i, j])
-    # TODO
+  def legal_move?((x, y))
+    @current_piece.possible_moves(@spaces).include?([x, y])
   end
 
   def remove_current_piece
     @current_piece = nil
+  end
+
+  def piece_at((x, y))
+    @spaces[x][y]
   end
 
   def to_s
@@ -57,23 +63,6 @@ class Board
     # TODO
   end
 end
-
-board = Board.new
-puts board
-board.set_current_piece(0,1)
-board.move_current_piece(0, 3)
-puts board
-
-board.set_current_piece(3,0)
-puts board
-board.move_current_piece(3, 2)
-puts board
-
-board.set_current_piece(3,2)
-puts board
-
-
-
 
 # $stdout.clear_screen
 

@@ -1,4 +1,3 @@
-require_relative '../coordinate'
 require_relative '../board_checkers'
 require_relative '../colorize'
 
