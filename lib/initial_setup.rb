@@ -4,18 +4,19 @@ require_relative 'pieces/Bishop'
 require_relative 'pieces/King'
 require_relative 'pieces/Queen'
 require_relative 'pieces/Pawn'
+require_relative 'pieces/no_piece'
 
 module InitialSetup
   def setup_board
     Array.new(8) do |i|
       Array.new(8) do |j|
-        Space.new(i, j, starting_piece(i, j))
+        starting_piece(i, j)
       end
     end
   end
 
   def starting_piece(x, y)
-    return ' ' if y.between?(2,5)
+    return NoPiece.new(x, y) if y.between?(2,5)
     y < 2 ? team = 'w' : team = 'b'
     piece_class = starting_class(x, y)
     return piece_class.new(team, x, y)

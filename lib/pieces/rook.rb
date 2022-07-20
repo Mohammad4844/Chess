@@ -5,6 +5,7 @@ class Rook < Piece
     super(team, x, y, 5)
   end
 
+
   def to_s
     super("\u2656", "\u265C")
   end
