@@ -63,3 +63,11 @@ board.set_current_piece(0,1)
 puts board
 board.move_current_piece(0, 3)
 puts board
+
+board.set_current_piece(0,0)
+puts board
+board.move_current_piece(2, 3)
+puts board
+board.set_current_piece(2, 3)
+puts board
+

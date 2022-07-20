@@ -8,8 +8,8 @@ class Pawn < Piece
   def possible_moves(board_spaces)
     moves = []
     moves << [@x, @y + move_step] if board_spaces[@x][@y + move_step].no_piece?
-    moves << [@x + 1, @y + move_step] if board_spaces[@x + 1][@y + move_step].black?
-    moves << [@x - 1, @y + move_step] if board_spaces[@x - 1][@y + move_step].black?
+    moves << [@x + 1, @y + move_step] if board_spaces[@x + 1][@y + move_step].different_team?(self)
+    moves << [@x - 1, @y + move_step] if board_spaces[@x - 1][@y + move_step].different_team?(self)
     moves << [@x, @y + 2 * move_step] if in_starting_position? &&
       board_spaces[@x][@y + 2 * move_step].no_piece? && board_spaces[@x][@y + move_step].no_piece?
     moves

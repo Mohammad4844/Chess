@@ -1,7 +1,10 @@
 require_relative '../coordinate'
+require_relative '../board_checkers'
 require_relative '../colorize'
 
 class Piece
+  include BoardCheckers
+
   attr_accessor :team, :x, :y, :point_value
 
   def initialize(team, x, y, point_value = nil)
@@ -12,6 +15,10 @@ class Piece
   end
 
   def update_possible_moves(coordinates = @coordinates); end
+
+  def different_team?(other)
+    self.team != other.team && self.team != '' && other.team != ''
+  end
 
   def no_piece?
     @team == ''
