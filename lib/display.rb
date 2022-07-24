@@ -30,4 +30,9 @@ module Display
   def print_check_message
     puts 'Your King is in Check!'.red
   end
+
+  def print_winner_by_checkmate_message(winner)
+    puts "\u2728 Congratulations #{winner.name}! You won by Checkmate! \u2728".green.bold
+    puts ''
+  end
 end

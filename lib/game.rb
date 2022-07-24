@@ -28,23 +28,17 @@ class Game
       print_board
       result = turn_order
 
+      break end_game_with_checkmate if @board.checkmate?(@current_player.team)
       break if result == 'exit' # change later
     end
   end
 
   def turn_order
-    if @board.check?(@current_player.team)
-      print_check_message
-      @board.set_current_piece(player_input)
-      print_board
-      @board.move_current_piece(player_input)
-      # TODO
-    else
-      @board.set_current_piece(player_input)
-      print_board
-      @board.move_current_piece(player_input)
-    end
-    # TO BE COMPLETED
+    print_check_message if @board.check?(@current_player.team)
+
+    @board.set_current_piece(player_input)
+    print_board
+    @board.move_current_piece(player_input)
 
     switch_current_player
   end
@@ -82,6 +76,11 @@ class Game
       end
     end
     nil
+  end
+
+  def end_game_with_checkmate
+    print_board
+    print_winner_by_checkmate_message(@players[1])
   end
 
   def current_piece_selected?

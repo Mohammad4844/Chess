@@ -28,6 +28,13 @@ class Board
     remove_current_piece
   end
 
+  def checkmate?(team)
+    my_king = @kings[team]
+    my_pieces = @spaces.flatten.select { |piece| piece.same_team?(my_king) }
+    check?(team) &&
+      my_pieces.none? { |piece| piece_has_move_to_remove_check?([piece.x, piece.y]) }
+  end
+
   def check?(team)
     my_king = @kings[team]
     enemy_pieces = @spaces.flatten.select { |piece| piece.different_team?(my_king) }
