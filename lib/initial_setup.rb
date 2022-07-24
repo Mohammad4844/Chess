@@ -8,20 +8,17 @@ require_relative 'pieces/no_piece'
 
 module InitialSetup
   def setup_board
-    Array.new(8) do |i|
-      Array.new(8) do |j|
-        starting_piece(i, j)
-      end
-    end
+    Array.new(8) { |i| Array.new(8) { |j| starting_piece(i, j) } }
   end
 
   def starting_piece(x, y)
-    return NoPiece.new(x, y) if y.between?(2,5)
-    y < 2 ? team = 'w' : team = 'b'
+    return NoPiece.new(x, y) if y.between?(2, 5)
+
+    team = y < 2 ? 'w' : 'b'
     piece_class = starting_class(x, y)
-    return piece_class.new(team, x, y)
+    piece_class.new(team, x, y)
   end
-    
+
   def starting_class(x, y)
     case y
     when 1, 6 then return Pawn
@@ -31,8 +28,12 @@ module InitialSetup
     when 0, 7 then Rook
     when 1, 6 then Knight
     when 2, 5 then Bishop
-    when 3 then King
-    when 4 then Queen
+    when 3 then Queen
+    when 4 then King
     end
+  end
+
+  def get_starting_kings
+    { 'w' => @spaces[4][0], 'b' => @spaces[4][7] }
   end
 end

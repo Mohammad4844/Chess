@@ -16,7 +16,7 @@ class Game
   end
 
   def setup_players
-    2.times do |i| 
+    2.times do |i|
       puts "Player #{i + 1}, please enter your name. You will be #{i.zero? ? 'White' : 'Black'}."
       @players << Player.new(gets.chomp, i.zero? ? 'w' : 'b')
     end
@@ -33,9 +33,17 @@ class Game
   end
 
   def turn_order
-    @board.set_current_piece(player_input)
-    print_board
-    @board.move_current_piece(player_input)
+    if @board.check?(@current_player.team)
+      print_check_message
+      @board.set_current_piece(player_input)
+      print_board
+      @board.move_current_piece(player_input)
+      # TODO
+    else
+      @board.set_current_piece(player_input)
+      print_board
+      @board.move_current_piece(player_input)
+    end
     # TO BE COMPLETED
 
     switch_current_player
@@ -58,13 +66,22 @@ class Game
 
   def verify_input(input)
     return nil unless input.match?(/\A[a-h]{1}[1-8]{1}\z/)
+
     input = Board.code_to_coordinates(input)
+
     if current_piece_selected?
-      return input if @board.legal_move?(input) 
-    else
-      return input if @current_player.in_players_team?(@board.piece_at(input)) &&
-        !@board.piece_at(input).possible_moves(@board.spaces).empty?
+      return input if @board.legal_move?(input)
+    elsif @current_player.in_players_team?(@board.piece_at(input))
+      if @board.check?(@current_player.team) && @board.piece_has_move_to_remove_check?(input)
+        return input
+      elsif !@board.piece_at(input).possible_moves(@board.spaces).empty?
+        moves = @board.piece_at(input).possible_moves(@board.spaces)
+        if moves.none? { |move| @board.hypothetical_move_causes_check?(input, move, @current_player.team) }
+          return input
+        end
+      end
     end
+    nil
   end
 
   def current_piece_selected?
@@ -75,7 +92,4 @@ class Game
     @players.rotate!(1)
     @current_player = @players[0]
   end
-
-
-
 end

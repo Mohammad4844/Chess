@@ -6,13 +6,13 @@ class King < Piece
   end
 
   def possible_moves(board_spaces)
-      moves = []
-      directions.each do |dir|
-        if inside_board?(@x + dir[0], @y + dir[1]) && !board_spaces[@x + dir[0]][@y + dir[1]].same_team?(self)
-          moves << [@x + dir[0], @y + dir[1]]
-        end
+    moves = []
+    directions.each do |dir|
+      if inside_board?(@x + dir[0], @y + dir[1]) && !board_spaces[@x + dir[0]][@y + dir[1]].same_team?(self)
+        moves << [@x + dir[0], @y + dir[1]]
       end
-      moves
+    end
+    moves
   end
 
   def to_s

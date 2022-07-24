@@ -26,4 +26,8 @@ module Display
   def print_incorrect_input_message
     puts 'Invalid input! Please Enter something valid:'
   end
+
+  def print_check_message
+    puts 'Your King is in Check!'.red
+  end
 end
