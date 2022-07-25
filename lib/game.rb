@@ -31,11 +31,31 @@ class Game
   end
 
   def load_previous_game
+    unless Dir.exist?('saved_game')
+      print_file_load_error('')
+      exit(1)
+    end
+    load_board
+    load_players
+    @current_player = @players[0]
+  end
+
+  def load_board
+    if File.zero?('saved_game/saved_board.json')
+      print_file_load_error('Board')
+      exit(1)
+    end
     board_data = File.readlines('saved_game/saved_board.json').join
     @board = Board.from_json(board_data)
+  end
+
+  def load_players
+    if File.zero?('saved_game/saved_players.json')
+      print_file_load_error('Players')
+      exit(1)
+    end
     players_data = JSON.parse File.readlines('saved_game/saved_players.json').join
     @players = players_data.map { |data| Player.new(data['name'], data['team']) }
-    @current_player = @players[0]
   end
 
   def play
@@ -103,12 +123,9 @@ class Game
   end
 
   def save_game
-    File.open('saved_game/saved_board.json', 'w') do |file|
-      file << @board.to_json
-    end
-    File.open('saved_game/saved_players.json', 'w') do |file|
-      file << @players.to_json
-    end
+    Dir.mkdir('saved_game') unless Dir.exist?('saved_game')
+    File.write('saved_game/saved_board.json', @board.to_json)
+    File.write('saved_game/saved_players.json', @players.to_json)
     print_game_save_message
   end
 

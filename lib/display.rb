@@ -41,10 +41,11 @@ module Display
   end
 
   def print_game_save_message
-    puts <<~TEXT
+    puts "\nYour game was saved successfully, overwriting the previous save\n".magenta
+  end
 
-    #{'Your game was saved successfully, overwriting the previous save'.magenta}
-
-    TEXT
+  def print_file_load_error(type)
+    puts "\nError in loading the saved #{type.bold} data. ".red +
+         "Dir/File either doesn't exist or is empty\n".red
   end
 end
