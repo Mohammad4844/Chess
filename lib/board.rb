@@ -85,8 +85,24 @@ class Board
     @spaces[x][y]
   end
 
+  def get_my_pieces(my_king)
+    @spaces.flatten.select { |piece| piece.same_team?(my_king) }
+  end
+
   def get_enemy_pieces(my_king)
     @spaces.flatten.select { |piece| piece.different_team?(my_king) }
+  end
+
+  def promote(team, class_name)
+    my_pieces = get_my_pieces(@kings[team])
+    pawn = my_pieces.find { |piece| piece.instance_of?(Pawn) && piece.promotable? }
+    promoted_piece = Module.const_get(class_name).new(pawn.team, pawn.x, pawn.y)
+    @spaces[pawn.x][pawn.y] = promoted_piece
+  end
+
+  def any_pawn_promotable?(team)
+    my_pieces = get_my_pieces(@kings[team])
+    my_pieces.any? { |piece| piece.instance_of?(Pawn) && piece.promotable? }
   end
 
   def to_s
@@ -123,3 +139,13 @@ class Board
     Board.new(spaces, kings)
   end
 end
+
+# board = Board.new
+# puts board
+
+# board.set_current_piece([0, 1])
+# board.move_current_piece([0, 7])
+
+# puts board.any_pawn_promotable?('w')
+# puts board.any_pawn_promotable?('b')
+# puts board

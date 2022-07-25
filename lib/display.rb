@@ -7,8 +7,8 @@ module Display
 
       #{'Welcome to Chess!'.bold}
 
-      Do you want to (1) play a new game?
-                     (2) load a saved game?
+      Do you want to (1) play a new game
+                     (2) load a saved game
 
       Enter your choice:
     INSTRUCTIONS
@@ -20,11 +20,11 @@ module Display
   end
 
   def print_player_piece_select_input_text(player)
-    puts "#{player.name}, enter coordinates of the piece you want to move or 'save' to save the game: "
+    puts "#{player.name.bold}, enter coordinates of the piece you want to move or 'save' to save the game: "
   end
 
   def print_player_piece_move_input_text(player)
-    puts "#{player.name}, enter coordinates of the space you want to move to: "
+    puts "#{player.name.bold}, enter coordinates of the space you want to move to: "
   end
 
   def print_incorrect_input_message
@@ -47,5 +47,16 @@ module Display
   def print_file_load_error(type)
     puts "\nError in loading the saved #{type.bold} data. ".red +
          "Dir/File either doesn't exist or is empty\n".red
+  end
+
+  def print_player_pawn_promote_text(player)
+    puts <<~TEXT
+      #{player.name.bold}, you can promote a pawn of yours to either a"
+        (1) Queen
+        (2) Rook
+        (3) Bishop
+        (4) Knight
+      Enter your choice:
+    TEXT
   end
 end

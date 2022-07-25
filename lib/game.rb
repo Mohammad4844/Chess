@@ -78,6 +78,8 @@ class Game
     print_board
     @board.move_current_piece(player_input)
 
+    promote_pawn if @board.any_pawn_promotable?(@current_player.team)
+
     switch_current_player
   end
 
@@ -97,7 +99,7 @@ class Game
   end
 
   def verify_input(input)
-    return 'save' if input == 'save'
+    return 'save' if !current_piece_selected? && input == 'save'
     return nil unless input.match?(/\A[a-h]{1}[1-8]{1}\z/)
 
     input = Board.code_to_coordinates(input)
@@ -115,6 +117,22 @@ class Game
       end
     end
     nil
+  end
+
+  def promote_pawn
+    print_board
+    print_player_pawn_promote_text(@current_player)
+    loop do
+      input = gets.chomp
+      case input
+      when '1' then break @board.promote(@current_player.team, 'Queen')
+      when '2' then break @board.promote(@current_player.team, 'Rook')
+      when '3' then break @board.promote(@current_player.team, 'Bishop')
+      when '4' then break @board.promote(@current_player.team, 'Knight')
+      end
+
+      print_incorrect_input_message
+    end
   end
 
   def end_game_with_checkmate
