@@ -1,4 +1,10 @@
-{
+{"players":[{
+  "name": "ali",
+  "team": "b"
+},{
+  "name": "sam",
+  "team": "w"
+}],"board":{
   "spaces": [
     [
       {"class":"Rook","team":"w","x":0,"y":0},
@@ -15,7 +21,7 @@
       {"class":"Pawn","team":"w","x":1,"y":1},
       {"class":"NoPiece","team":"","x":1,"y":2},
       {"class":"NoPiece","team":"","x":1,"y":3},
-      {"class":"King","team":"w","x":1,"y":4},
+      {"class":"NoPiece","team":"","x":1,"y":4},
       {"class":"NoPiece","team":"","x":1,"y":5},
       {"class":"Pawn","team":"b","x":1,"y":6},
       {"class":"Knight","team":"b","x":1,"y":7}
@@ -34,14 +40,14 @@
       {"class":"Queen","team":"w","x":3,"y":0},
       {"class":"Pawn","team":"w","x":3,"y":1},
       {"class":"NoPiece","team":"","x":3,"y":2},
-      {"class":"Queen","team":"b","x":3,"y":3},
+      {"class":"NoPiece","team":"","x":3,"y":3},
       {"class":"NoPiece","team":"","x":3,"y":4},
       {"class":"NoPiece","team":"","x":3,"y":5},
       {"class":"Pawn","team":"b","x":3,"y":6},
-      {"class":"NoPiece","team":"","x":3,"y":7}
+      {"class":"Queen","team":"b","x":3,"y":7}
     ],
     [
-      {"class":"NoPiece","team":"","x":4,"y":0},
+      {"class":"King","team":"w","x":4,"y":0},
       {"class":"Pawn","team":"w","x":4,"y":1},
       {"class":"NoPiece","team":"","x":4,"y":2},
       {"class":"NoPiece","team":"","x":4,"y":3},
@@ -55,7 +61,7 @@
       {"class":"Pawn","team":"w","x":5,"y":1},
       {"class":"NoPiece","team":"","x":5,"y":2},
       {"class":"NoPiece","team":"","x":5,"y":3},
-      {"class":"Knight","team":"w","x":5,"y":4},
+      {"class":"NoPiece","team":"","x":5,"y":4},
       {"class":"NoPiece","team":"","x":5,"y":5},
       {"class":"Pawn","team":"b","x":5,"y":6},
       {"class":"Bishop","team":"b","x":5,"y":7}
@@ -73,7 +79,7 @@
     [
       {"class":"Rook","team":"w","x":7,"y":0},
       {"class":"Pawn","team":"w","x":7,"y":1},
-      {"class":"NoPiece","team":"","x":7,"y":2},
+      {"class":"Knight","team":"w","x":7,"y":2},
       {"class":"NoPiece","team":"","x":7,"y":3},
       {"class":"NoPiece","team":"","x":7,"y":4},
       {"class":"NoPiece","team":"","x":7,"y":5},
@@ -82,7 +88,7 @@
     ]
   ],
   "kings": {
-    "w": {"class":"King","team":"w","x":1,"y":4},
+    "w": {"class":"King","team":"w","x":4,"y":0},
     "b": {"class":"King","team":"b","x":4,"y":7}
   }
-}
+}}

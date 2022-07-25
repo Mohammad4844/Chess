@@ -41,7 +41,6 @@ class Piece
     end
   end
 
-
   def to_json(args)
     JSON.generate({
       class: self.class,
@@ -52,7 +51,7 @@ class Piece
   end
 
   def self.from_json(s)
-    data = JSON.load(s)
+    data = JSON.parse(s)
     data['class'].new(data['team'], data['x'], data['y'])
   end
 end

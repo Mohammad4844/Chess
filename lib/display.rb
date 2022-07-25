@@ -16,7 +16,7 @@ module Display
   end
 
   def print_player_piece_select_input_text(player)
-    puts "#{player.name}, enter coordinates of the piece you want to move: "
+    puts "#{player.name}, enter coordinates of the piece you want to move or 'save' to save the game: "
   end
 
   def print_player_piece_move_input_text(player)
@@ -24,7 +24,7 @@ module Display
   end
 
   def print_incorrect_input_message
-    puts 'Invalid input! Please Enter something valid:'
+    puts 'Invalid input! Please Enter something valid: '
   end
 
   def print_check_message
@@ -34,5 +34,9 @@ module Display
   def print_winner_by_checkmate_message(winner)
     puts "\u2728 Congratulations #{winner.name}! You won by Checkmate! \u2728".green.bold
     puts ''
+  end
+
+  def print_game_save_message
+    puts 'Your game was saved successfully, overwriting the previous save'.magenta
   end
 end

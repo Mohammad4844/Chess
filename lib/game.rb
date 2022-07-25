@@ -1,6 +1,7 @@
 require_relative 'board'
 require_relative 'display'
 require_relative 'player'
+require 'json'
 
 class Game
   include Display
@@ -29,14 +30,17 @@ class Game
       result = turn_order
 
       break end_game_with_checkmate if @board.checkmate?(@current_player.team)
-      break if result == 'exit' # change later
+      break save_game if result == 'save'
     end
   end
 
   def turn_order
     print_check_message if @board.check?(@current_player.team)
 
-    @board.set_current_piece(player_input)
+    input = player_input
+    return input if input == 'save'
+
+    @board.set_current_piece(input)
     print_board
     @board.move_current_piece(player_input)
 
@@ -59,6 +63,7 @@ class Game
   end
 
   def verify_input(input)
+    return 'save' if input == 'save'
     return nil unless input.match?(/\A[a-h]{1}[1-8]{1}\z/)
 
     input = Board.code_to_coordinates(input)
@@ -81,6 +86,16 @@ class Game
   def end_game_with_checkmate
     print_board
     print_winner_by_checkmate_message(@players[1])
+  end
+
+  def save_game
+    File.open('saved_game.json', 'w') do |file|
+      file << JSON.generate({
+        players: @players,
+        board: @board
+      })
+    end
+    print_game_save_message
   end
 
   def current_piece_selected?

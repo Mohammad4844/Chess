@@ -97,7 +97,7 @@ class Board
     Marshal.load(Marshal.dump(self))
   end
 
-  def to_json
+  def to_json(args)
     JSON.pretty_generate({
       spaces: @spaces,
       kings: @kings
@@ -105,7 +105,7 @@ class Board
   end
 
   def self.from_json(s)
-    data = JSON.load(s)
+    data = JSON.parse(s)
     spaces = data['spaces']
 
     spaces.map! do |row|
