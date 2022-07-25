@@ -7,6 +7,10 @@ module Display
 
       #{'Welcome to Chess!'.bold}
 
+      Do you want to (1) play a new game?
+                     (2) load a saved game?
+
+      Enter your choice:
     INSTRUCTIONS
   end
 
@@ -37,6 +41,10 @@ module Display
   end
 
   def print_game_save_message
-    puts 'Your game was saved successfully, overwriting the previous save'.magenta
+    puts <<~TEXT
+
+    #{'Your game was saved successfully, overwriting the previous save'.magenta}
+
+    TEXT
   end
 end

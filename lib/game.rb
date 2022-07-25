@@ -13,14 +13,28 @@ class Game
 
   def start
     print_initial_instructions
-    setup_players
+    loop do
+      input = gets.chomp
+      break setup_players_new_game if input == '1'
+      break load_previous_game if input == '2'
+
+      print_incorrect_input_message
+    end
   end
 
-  def setup_players
+  def setup_players_new_game
     2.times do |i|
       puts "Player #{i + 1}, please enter your name. You will be #{i.zero? ? 'White' : 'Black'}."
       @players << Player.new(gets.chomp, i.zero? ? 'w' : 'b')
     end
+    @current_player = @players[0]
+  end
+
+  def load_previous_game
+    board_data = File.readlines('saved_game/saved_board.json').join
+    @board = Board.from_json(board_data)
+    players_data = JSON.parse File.readlines('saved_game/saved_players.json').join
+    @players = players_data.map { |data| Player.new(data['name'], data['team']) }
     @current_player = @players[0]
   end
 
@@ -89,11 +103,11 @@ class Game
   end
 
   def save_game
-    File.open('saved_game.json', 'w') do |file|
-      file << JSON.generate({
-        players: @players,
-        board: @board
-      })
+    File.open('saved_game/saved_board.json', 'w') do |file|
+      file << @board.to_json
+    end
+    File.open('saved_game/saved_players.json', 'w') do |file|
+      file << @players.to_json
     end
     print_game_save_message
   end

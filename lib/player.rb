@@ -20,7 +20,7 @@ class Player
     })
   end
 
-  def from_json(s)
+  def self.from_json(s)
     data = JSON.parse(s)
     Player.new(data['name'], data['team'])
   end

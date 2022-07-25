@@ -97,7 +97,7 @@ class Board
     Marshal.load(Marshal.dump(self))
   end
 
-  def to_json(args)
+  def to_json
     JSON.pretty_generate({
       spaces: @spaces,
       kings: @kings

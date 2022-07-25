@@ -1,19 +1,13 @@
-{"players":[{
-  "name": "ali",
-  "team": "b"
-},{
-  "name": "sam",
-  "team": "w"
-}],"board":{
+{
   "spaces": [
     [
       {"class":"Rook","team":"w","x":0,"y":0},
-      {"class":"Pawn","team":"w","x":0,"y":1},
+      {"class":"NoPiece","team":"","x":0,"y":1},
       {"class":"NoPiece","team":"","x":0,"y":2},
-      {"class":"NoPiece","team":"","x":0,"y":3},
-      {"class":"NoPiece","team":"","x":0,"y":4},
+      {"class":"Pawn","team":"w","x":0,"y":3},
+      {"class":"Pawn","team":"b","x":0,"y":4},
       {"class":"NoPiece","team":"","x":0,"y":5},
-      {"class":"Pawn","team":"b","x":0,"y":6},
+      {"class":"NoPiece","team":"","x":0,"y":6},
       {"class":"Rook","team":"b","x":0,"y":7}
     ],
     [
@@ -28,9 +22,9 @@
     ],
     [
       {"class":"Bishop","team":"w","x":2,"y":0},
-      {"class":"Pawn","team":"w","x":2,"y":1},
+      {"class":"NoPiece","team":"","x":2,"y":1},
       {"class":"NoPiece","team":"","x":2,"y":2},
-      {"class":"NoPiece","team":"","x":2,"y":3},
+      {"class":"Pawn","team":"w","x":2,"y":3},
       {"class":"NoPiece","team":"","x":2,"y":4},
       {"class":"NoPiece","team":"","x":2,"y":5},
       {"class":"Pawn","team":"b","x":2,"y":6},
@@ -67,7 +61,7 @@
       {"class":"Bishop","team":"b","x":5,"y":7}
     ],
     [
-      {"class":"NoPiece","team":"","x":6,"y":0},
+      {"class":"Knight","team":"w","x":6,"y":0},
       {"class":"Pawn","team":"w","x":6,"y":1},
       {"class":"NoPiece","team":"","x":6,"y":2},
       {"class":"NoPiece","team":"","x":6,"y":3},
@@ -79,7 +73,7 @@
     [
       {"class":"Rook","team":"w","x":7,"y":0},
       {"class":"Pawn","team":"w","x":7,"y":1},
-      {"class":"Knight","team":"w","x":7,"y":2},
+      {"class":"NoPiece","team":"","x":7,"y":2},
       {"class":"NoPiece","team":"","x":7,"y":3},
       {"class":"NoPiece","team":"","x":7,"y":4},
       {"class":"NoPiece","team":"","x":7,"y":5},
@@ -91,4 +85,4 @@
     "w": {"class":"King","team":"w","x":4,"y":0},
     "b": {"class":"King","team":"b","x":4,"y":7}
   }
-}}
+}
