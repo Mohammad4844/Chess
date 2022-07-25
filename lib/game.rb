@@ -70,7 +70,7 @@ class Game
         return input
       elsif !@board.piece_at(input).possible_moves(@board.spaces).empty?
         moves = @board.piece_at(input).possible_moves(@board.spaces)
-        if moves.none? { |move| @board.hypothetical_move_causes_check?(input, move, @current_player.team) }
+        unless moves.all? { |move| @board.hypothetical_move_causes_check?(input, move, @current_player.team) }
           return input
         end
       end

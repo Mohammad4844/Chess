@@ -1,9 +1,9 @@
-require_relative 'initial_setup'
+require_relative 'board_helpers'
 require_relative 'colorize'
 require 'json'
 
 class Board
-  include InitialSetup
+  include BoardHelpers
 
   attr_accessor :spaces, :current_piece, :kings
 
@@ -37,7 +37,7 @@ class Board
 
   def check?(team)
     my_king = @kings[team]
-    enemy_pieces = @spaces.flatten.select { |piece| piece.different_team?(my_king) }
+    enemy_pieces = get_enemy_pieces(my_king)
     enemy_pieces.any? { |piece| piece.possible_moves(@spaces).include?([my_king.x, my_king.y]) }
   end
 
@@ -49,17 +49,18 @@ class Board
   end
 
   def hypothetical_move_causes_check?((x1, y1), (x2, y2), team)
-    hypothetical_board = Marshal.load(Marshal.dump(self))
-    hypothetical_board.set_current_piece([x1, y1])
-    hypothetical_board.move_current_piece([x2, y2])
-    hypothetical_board.check?(team)
+    board_with_hypothetical_move([x1, y1], [x2, y2]).check?(team)
   end
 
   def hypothetical_move_removes_check?((x1, y1), (x2, y2), team)
-    hypothetical_board = Marshal.load(Marshal.dump(self))
+    !board_with_hypothetical_move([x1, y1], [x2, y2]).check?(team)
+  end
+
+  def board_with_hypothetical_move((x1, y1), (x2, y2))
+    hypothetical_board = clone
     hypothetical_board.set_current_piece([x1, y1])
     hypothetical_board.move_current_piece([x2, y2])
-    !hypothetical_board.check?(team)
+    hypothetical_board
   end
 
   def legal_move?((x, y))
@@ -84,27 +85,41 @@ class Board
     @spaces[x][y]
   end
 
+  def get_enemy_pieces(my_king)
+    @spaces.flatten.select { |piece| piece.different_team?(my_king) }
+  end
+
   def to_s
-    s = ''
-    for j in 0..7 do
-      s << "\n#{8 - j} ".italic
-      for i in 0..7 do
-        if @kings.to_a.any? { |pair| pair[1].x == i && pair[1].y == 7 - j && check?(pair[0]) }
-          s << " #{piece_at([i, 7 - j])}".bg_red + ' '.bg_red
-        elsif !@current_piece.nil? && legal_move?([i, 7 - j]) &&
-          s << " #{piece_at([i, 7 - j])}".bg_green + ' '.bg_green
-        elsif (i.even? && j.even?) || (i.odd? && j.odd?)
-          s << " #{piece_at([i, 7 - j])}".bg_magenta + ' '.bg_magenta
+    board_to_string
+  end
+
+  def clone
+    Marshal.load(Marshal.dump(self))
+  end
+
+  def to_json
+    JSON.pretty_generate({
+      spaces: @spaces,
+      kings: @kings
+    })
+  end
+
+  def self.from_json(s)
+    data = JSON.load(s)
+    spaces = data['spaces']
+
+    spaces.map! do |row|
+      row.map! do |piece| 
+        if piece['class'] == 'NoPiece'
+          Module.const_get(piece['class']).new(piece['x'], piece['y'])
         else
-          s << " #{piece_at([i, 7 - j])}".bg_gray + ' '.bg_gray
+          Module.const_get(piece['class']).new(piece['team'], piece['x'], piece['y']) 
         end
       end
     end
-    s << "\n   a  b  c  d  e  f  g  h \n".italic
+
+    w_king = data['kings']['w']; b_king = data['kings']['b']
+    kings = { 'w' => spaces[w_king['x']][w_king['y']], 'b' => spaces[b_king['x']][b_king['y']] }
+    Board.new(spaces, kings)
   end
-
-  def to_json; end
-
-  def self.from_json(string); end
 end
-

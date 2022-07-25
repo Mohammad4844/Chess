@@ -1,4 +1,5 @@
 require_relative 'piece'
+require 'json'
 
 class King < Piece
   def initialize(team, x, y)

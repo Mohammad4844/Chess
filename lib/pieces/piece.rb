@@ -1,6 +1,7 @@
 require_relative '../board_checkers'
 require_relative '../colorize'
 
+
 class Piece
   include BoardCheckers
 
@@ -39,5 +40,19 @@ class Piece
     when 'b' then unicode_b.black
     end
   end
-end
 
+
+  def to_json(args)
+    JSON.generate({
+      class: self.class,
+      team: @team,
+      x: @x,
+      y: @y
+    })
+  end
+
+  def self.from_json(s)
+    data = JSON.load(s)
+    data['class'].new(data['team'], data['x'], data['y'])
+  end
+end
