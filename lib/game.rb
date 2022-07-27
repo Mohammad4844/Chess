@@ -63,6 +63,7 @@ class Game
       print_board
       result = turn_order
 
+      break end_game_with_stalemate if @board.stalemate?(@current_player.team)
       break end_game_with_checkmate if @board.checkmate?(@current_player.team)
       break save_game if result == 'save'
     end
@@ -138,6 +139,11 @@ class Game
   def end_game_with_checkmate
     print_board
     print_winner_by_checkmate_message(@players[1])
+  end
+
+  def end_game_with_stalemate
+    print_board
+    print_stalemate_message
   end
 
   def save_game

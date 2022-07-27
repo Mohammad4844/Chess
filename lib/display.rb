@@ -36,8 +36,11 @@ module Display
   end
 
   def print_winner_by_checkmate_message(winner)
-    puts "\u2728 Congratulations #{winner.name}! You won by Checkmate! \u2728".green.bold
-    puts ''
+    puts "\u2728 Congratulations #{winner.name}! You won by Checkmate! \u2728\n".green.bold
+  end
+
+  def print_stalemate_message
+    puts "Its a draw by stalemate!\n".blue
   end
 
   def print_game_save_message

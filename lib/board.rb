@@ -39,7 +39,7 @@ class Board
 
   def checkmate?(team)
     my_king = @kings[team]
-    my_pieces = @spaces.flatten.select { |piece| piece.same_team?(my_king) }
+    my_pieces = get_my_pieces(my_king)
     check?(team) &&
       my_pieces.none? { |piece| piece_has_move_to_remove_check?([piece.x, piece.y]) }
   end
@@ -49,6 +49,18 @@ class Board
     enemy_pieces = get_enemy_pieces(my_king)
     enemy_pieces.any? do |piece|
       piece.possible_moves(@spaces, @previous_piece).include?([my_king.x, my_king.y])
+    end
+  end
+
+  def stalemate?(team)
+    my_king = @kings[team]
+    my_pieces = get_my_pieces(my_king)
+    !check?(team) &&
+    my_pieces.all? do |piece|
+      moves = piece.possible_moves(@spaces, @previous_piece)
+      moves.empty? || moves.all? do |move|
+        hypothetical_move_causes_check?([piece.x, piece.y], move, team)
+      end
     end
   end
 
@@ -169,16 +181,3 @@ class Board
     Board.new(spaces, kings, prev_piece)
   end
 end
-
-board = Board.new
-puts board
-
-board.set_current_piece([0, 1])
-board.move_current_piece([0, 4])
-
-board.set_current_piece([1, 6])
-board.move_current_piece([1, 4])
-
-p board.piece_at([0, 4]).possible_moves(board.spaces, board.previous_piece)
-
-puts board
