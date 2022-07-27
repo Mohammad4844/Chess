@@ -8,7 +8,7 @@ class Rook < Piece
     super(team, x, y, 5)
   end
 
-  def possible_moves(board_spaces)
+  def possible_moves(board_spaces, _previous_piece = '')
     get_orthogonal_moves(board_spaces)
   end
 

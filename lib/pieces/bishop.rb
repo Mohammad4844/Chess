@@ -8,7 +8,7 @@ class Bishop < Piece
     super(team, x, y, 3)
   end
 
-  def possible_moves(board_spaces)
+  def possible_moves(board_spaces, _previous_piece = '')
     get_diagonal_moves(board_spaces)
   end
 

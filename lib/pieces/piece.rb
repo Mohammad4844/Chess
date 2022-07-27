@@ -14,12 +14,26 @@ class Piece
     @point_value = point_value
   end
 
+  def change_coordinates(x, y)
+    @x = x
+    @y = y
+  end
+
+  def ==(other)
+    same_team?(other) && @x == other.x && @y == other.y &&
+      self.class == other.class
+  end
+
   def same_team?(other)
     self.team == other.team
   end
 
   def different_team?(other)
     self.team != other.team && self.team != '' && other.team != ''
+  end
+
+  def pawn?
+    self.instance_of?(Pawn)
   end
 
   def no_piece?

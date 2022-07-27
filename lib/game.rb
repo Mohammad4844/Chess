@@ -109,8 +109,8 @@ class Game
     elsif @current_player.in_players_team?(@board.piece_at(input))
       if @board.check?(@current_player.team) && @board.piece_has_move_to_remove_check?(input)
         return input
-      elsif !@board.piece_at(input).possible_moves(@board.spaces).empty?
-        moves = @board.piece_at(input).possible_moves(@board.spaces)
+      elsif !@board.piece_at(input).possible_moves(@board.spaces, @board.previous_piece).empty?
+        moves = @board.piece_at(input).possible_moves(@board.spaces, @board.previous_piece)
         unless moves.all? { |move| @board.hypothetical_move_causes_check?(input, move, @current_player.team) }
           return input
         end

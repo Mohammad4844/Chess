@@ -45,13 +45,13 @@ module BoardHelpers
         if checkmate?('b') &&
            get_enemy_pieces(@kings['b']).any? do |piece|
              piece.x == i && piece.y == 7 - j &&
-             piece.possible_moves(@spaces).include?([@kings['b'].x, @kings['b'].y])
+             piece.possible_moves(@spaces, @previos_piece).include?([@kings['b'].x, @kings['b'].y])
            end
           s << " #{piece_at([i, 7 - j])}".bg_blue + ' '.bg_blue
         elsif checkmate?('w') &&
               get_enemy_pieces(@kings['w']).any? do |piece|
                 piece.x == i && piece.y == 7 - j &&
-                piece.possible_moves(@spaces).include?([@kings['w'].x, @kings['w'].y])
+                piece.possible_moves(@spaces, @previos_piece).include?([@kings['w'].x, @kings['w'].y])
               end
           s << " #{piece_at([i, 7 - j])}".bg_blue + ' '.bg_blue
         elsif @kings.to_a.any? { |pair| pair[1].x == i && pair[1].y == 7 - j && check?(pair[0]) }

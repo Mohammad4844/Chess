@@ -6,7 +6,7 @@ class King < Piece
     super(team, x, y)
   end
 
-  def possible_moves(board_spaces)
+  def possible_moves(board_spaces, _previous_piece = '')
     moves = []
     directions.each do |dir|
       if inside_board?(@x + dir[0], @y + dir[1]) && !board_spaces[@x + dir[0]][@y + dir[1]].same_team?(self)
