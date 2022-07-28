@@ -23,7 +23,7 @@ class Board
   end
 
   def move_current_piece((x, y))
-    if en_passant_move?([x, y])
+    if en_passant_position?([x, y])
       en_passant_move([x, y])
     else
       regular_move([x, y])
@@ -117,7 +117,7 @@ class Board
     @spaces.flatten.select { |piece| piece.different_team?(my_king) }
   end
 
-  def en_passant_move?((x, y))
+  def en_passant_position?((x, y))
     # Only thing really needed to be checked is if the space is a diagonal and
     # has no piece as all other checks are done in #possible_moves
     @current_piece.pawn? && piece_at([x, y]).no_piece? &&
