@@ -4,6 +4,7 @@ A 2 player command-line chess game made using Ruby. It implements all the functi
 Run `main.rb` to play!
 <br>
 ## Features/Rules implemented
+- A command-line display of the board
 - Moving and capturing of pieces
 - Check & checkmate detection
 - Stalemate detection
