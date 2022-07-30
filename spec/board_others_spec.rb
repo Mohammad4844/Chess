@@ -8,8 +8,7 @@ describe Board do
     subject(:board_check) { described_class.new }
 
     before do
-      knight = Knight.new('w', 5, 5)
-      board_check.spaces[5][5] = knight
+      board_check.spaces[5][5] = Knight.new('w', 5, 5)
     end
 
     context 'when black is in check' do
@@ -102,25 +101,54 @@ describe Board do
     end
   end
 
-  describe '#piece_has_move_to_remove_check?' do
+  describe '#get_possible_moves' do
     subject(:board) { described_class.new }
 
-    before do
-      board.spaces[4][2] = Queen.new('w', 4, 2)
-      board.spaces[4][6] = NoPiece.new(4, 6)
+    it 'returns the possible moves of the piece' do
+      moves = board.get_possible_moves([1, 0])
+      expect(moves).to match_array([[0, 2], [2, 2]])
     end
+  end
 
-    context 'piece can remove check' do
+  describe '#piece_has_legal_move?' do
+    subject(:board) { described_class.new }
+
+    context 'when piece has lagal moves' do
       it 'returns true' do
-        result = board.piece_has_move_to_remove_check?([3, 7])
+        result = board.piece_has_legal_move?([3, 1])
         expect(result).to be true
       end
     end
 
-    context 'piece cant remove check' do
+    context 'when all moves result in check' do
+      before do
+        board.spaces[1][3] = Queen.new('b', 1, 3)
+      end
+
       it 'returns false' do
-        result = board.piece_has_move_to_remove_check?([4, 7])
+        result = board.piece_has_legal_move?([3, 1])
         expect(result).to be false
+      end
+    end
+
+    context 'when in check' do
+      before do
+        board.spaces[4][2] = Queen.new('w', 4, 2)
+        board.spaces[4][6] = NoPiece.new(4, 6)
+      end
+
+      context 'and piece can remove check' do
+        it 'returns true' do
+          result = board.piece_has_legal_move?([3, 7])
+          expect(result).to be true
+        end
+      end
+
+      context 'and piece cannot remove check' do
+        it 'returns false' do
+          result = board.piece_has_legal_move?([4, 7])
+          expect(result).to be false
+        end
       end
     end
   end
@@ -132,14 +160,14 @@ describe Board do
       board.spaces[7][4] = Queen.new('w', 7, 4)
     end
 
-    context 'move causes a check' do
+    context 'when move causes a check' do
       it 'returns true' do
         result = board.hypothetical_move_causes_check?([5, 6], [5, 5], 'b')
         expect(result).to be true
       end
     end
 
-    context 'move doesnt cause a check' do
+    context 'when move doesnt cause a check' do
       it 'returns false' do
         result = board.hypothetical_move_causes_check?([4, 6], [4, 5], 'b')
         expect(result).to be false
@@ -157,7 +185,7 @@ describe Board do
       board.spaces[5][6] = NoPiece.new(5, 6)
     end
 
-    context 'move removes a check' do
+    context 'when move removes a check' do
       context 'by capturing the piece causing check' do
         it 'returns true' do
           result = board.hypothetical_move_removes_check?([7, 4], [4, 4], 'b')
@@ -180,7 +208,7 @@ describe Board do
       end
     end
 
-    context 'move doesnt remove a check' do
+    context 'when move doesnt remove a check' do
       it 'returns false' do
         result = board.hypothetical_move_removes_check?([4, 7], [4, 6], 'b')
         expect(result).to be false

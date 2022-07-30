@@ -1,5 +1,6 @@
+# frozen_string_literal: true
+
 require_relative 'piece'
-require_relative '../board_checkers'
 
 class Pawn < Piece
   def initialize(team, x, y, en_passant = false)

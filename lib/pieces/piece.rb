@@ -1,10 +1,8 @@
-require_relative '../board_checkers'
+# frozen_string_literal: true
+
 require_relative '../colorize'
 
-
 class Piece
-  include BoardCheckers
-
   attr_accessor :team, :x, :y, :point_value
 
   def initialize(team, x, y, point_value = nil)
@@ -46,6 +44,11 @@ class Piece
 
   def black?
     @team == 'b'
+  end
+
+  # Helper method to see if cooridnates are inside the board
+  def inside_board?(x, y)
+    x.between?(0, 7) && y.between?(0, 7)
   end
 
   def to_s(unicode_w, unicode_b)

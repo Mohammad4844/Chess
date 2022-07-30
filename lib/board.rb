@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'board_helpers'
 require_relative 'colorize'
 require 'json'
@@ -41,14 +43,14 @@ class Board
     my_king = @kings[team]
     my_pieces = get_my_pieces(my_king)
     check?(team) &&
-      my_pieces.none? { |piece| piece_has_move_to_remove_check?([piece.x, piece.y]) }
+      my_pieces.none? { |piece| piece_has_legal_move?([piece.x, piece.y]) }
   end
 
   def check?(team)
     my_king = @kings[team]
     enemy_pieces = get_enemy_pieces(my_king)
     enemy_pieces.any? do |piece|
-      piece.possible_moves(@spaces, @previous_piece).include?([my_king.x, my_king.y])
+      get_possible_moves([piece.x, piece.y]).include?([my_king.x, my_king.y])
     end
   end
 
@@ -56,19 +58,22 @@ class Board
     my_king = @kings[team]
     my_pieces = get_my_pieces(my_king)
     !check?(team) &&
-    my_pieces.all? do |piece|
-      moves = piece.possible_moves(@spaces, @previous_piece)
-      moves.empty? || moves.all? do |move|
-        hypothetical_move_causes_check?([piece.x, piece.y], move, team)
+      my_pieces.all? do |piece|
+        moves = get_possible_moves([piece.x, piece.y])
+        moves.empty? || moves.all? do |move|
+          hypothetical_move_causes_check?([piece.x, piece.y], move, team)
+        end
       end
-    end
   end
 
-  def piece_has_move_to_remove_check?((x, y))
-    piece = @spaces[x][y]
-    piece.possible_moves(@spaces, @previos_piece).any? do |move|
-      hypothetical_move_removes_check?([piece.x, piece.y], move, piece.team)
-    end
+  # Doesnt take into checks that cause/remove checks
+  def get_possible_moves((x, y))
+    piece_at([x, y]).possible_moves(@spaces, @previous_piece)
+  end
+
+  def piece_has_legal_move?((x, y))
+    moves = get_possible_moves([x, y])
+    moves.any? { |move| legal_move?(move, piece_at([x, y])) }
   end
 
   def hypothetical_move_causes_check?((x1, y1), (x2, y2), team)
@@ -86,15 +91,18 @@ class Board
     hypothetical_board
   end
 
-  def legal_move?((x, y))
-    moves = @current_piece.possible_moves(@spaces, @previous_piece)
-    if check?(@current_piece.team)
+  # Gets all moves possible by piece, (if king is in check) selects only the
+  # moves that remove check, (and if not in check) filters out moves that cause
+  # check. Gives moves of current piece, but another piece can be specified
+  def legal_move?((x, y), piece = @current_piece)
+    moves = piece.possible_moves(@spaces, @previous_piece)
+    if check?(piece.team)
       moves.select! do |move|
-        hypothetical_move_removes_check?([@current_piece.x, @current_piece.y], move, @current_piece.team) 
+        hypothetical_move_removes_check?([piece.x, piece.y], move, piece.team)
       end
     else
-      moves.select! do |move|
-        !hypothetical_move_causes_check?([@current_piece.x, @current_piece.y], move, @current_piece.team) 
+      moves.reject! do |move|
+        hypothetical_move_causes_check?([piece.x, piece.y], move, piece.team)
       end
     end
     moves.include?([x, y])
@@ -133,7 +141,7 @@ class Board
 
   def promote(team, class_name)
     my_pieces = get_my_pieces(@kings[team])
-    pawn = my_pieces.find { |piece| piece.instance_of?(Pawn) && piece.promotable? }
+    pawn = my_pieces.find { |piece| piece.pawn? && piece.promotable? }
     promoted_piece = Module.const_get(class_name).new(pawn.team, pawn.x, pawn.y)
     @spaces[pawn.x][pawn.y] = promoted_piece
   end
@@ -176,7 +184,8 @@ class Board
     prev_piece_data = data['previous_piece']
     prev_piece = spaces[prev_piece_data['x']][prev_piece_data['y']]
 
-    w_king = data['kings']['w']; b_king = data['kings']['b']
+    w_king = data['kings']['w']
+    b_king = data['kings']['b']
     kings = { 'w' => spaces[w_king['x']][w_king['y']], 'b' => spaces[b_king['x']][b_king['y']] }
     Board.new(spaces, kings, prev_piece)
   end

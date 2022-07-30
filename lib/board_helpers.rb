@@ -1,9 +1,11 @@
-require_relative 'pieces/Rook'
-require_relative 'pieces/Knight'
-require_relative 'pieces/Bishop'
-require_relative 'pieces/King'
-require_relative 'pieces/Queen'
-require_relative 'pieces/Pawn'
+# frozen_string_literal: true
+
+require_relative 'pieces/rook'
+require_relative 'pieces/knight'
+require_relative 'pieces/bishop'
+require_relative 'pieces/king'
+require_relative 'pieces/queen'
+require_relative 'pieces/pawn'
 require_relative 'pieces/no_piece'
 
 module BoardHelpers
@@ -38,35 +40,23 @@ module BoardHelpers
   end
 
   def board_to_string
-    s = "\n   a  b  c  d  e  f  g  h ".italic
-    for j in 0..7 do
-      s << "\n#{8 - j} ".italic
-      for i in 0..7 do
-        if checkmate?('b') &&
-           get_enemy_pieces(@kings['b']).any? do |piece|
-             piece.x == i && piece.y == 7 - j &&
-             piece.possible_moves(@spaces, @previos_piece).include?([@kings['b'].x, @kings['b'].y])
-           end
-          s << " #{piece_at([i, 7 - j])}".bg_blue + ' '.bg_blue
-        elsif checkmate?('w') &&
-              get_enemy_pieces(@kings['w']).any? do |piece|
-                piece.x == i && piece.y == 7 - j &&
-                piece.possible_moves(@spaces, @previos_piece).include?([@kings['w'].x, @kings['w'].y])
-              end
-          s << " #{piece_at([i, 7 - j])}".bg_blue + ' '.bg_blue
-        elsif @kings.to_a.any? { |pair| pair[1].x == i && pair[1].y == 7 - j && check?(pair[0]) }
-          s << " #{piece_at([i, 7 - j])}".bg_red + ' '.bg_red
-        elsif !@current_piece.nil? && legal_move?([i, 7 - j])
-          s << " #{piece_at([i, 7 - j])}".bg_green + ' '.bg_green
-        elsif (i.even? && j.even?) || (i.odd? && j.odd?)
-          s << " #{piece_at([i, 7 - j])}".bg_magenta + ' '.bg_magenta
-        else
-          s << " #{piece_at([i, 7 - j])}".bg_gray + ' '.bg_gray
-        end
-      end
-      s << " #{8 - j}".italic
+    (0..7).reduce("\n   a  b  c  d  e  f  g  h ".italic) do |grid, j|
+      grid + "\n#{8 - j} ".italic +
+        (0..7).reduce('') do |line, i|
+          line + get_space_to_s(i, 7 - j)
+        end + " #{8 - j}".italic
+    end + "\n   a  b  c  d  e  f  g  h \n".italic
+  end
+
+  def get_space_to_s(x, y)
+    if @kings.to_a.any? { |pair| pair[1].x == x && pair[1].y == y && check?(pair[0]) }
+      " #{piece_at([x, y])}".bg_red + ' '.bg_red
+    elsif !@current_piece.nil? && legal_move?([x, y])
+      " #{piece_at([x, y])}".bg_green + ' '.bg_green
+    elsif (x.even? && y.even?) || (x.odd? && y.odd?)
+      " #{piece_at([x, y])}".bg_magenta + ' '.bg_magenta
+    else
+      " #{piece_at([x, y])}".bg_gray + ' '.bg_gray
     end
-    s << "\n   a  b  c  d  e  f  g  h \n".italic
-    s
   end
 end

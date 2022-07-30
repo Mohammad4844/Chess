@@ -1,4 +1,6 @@
-# Code taken from: 
+# frozen_string_literal: true
+
+# Code taken from:
 # https://stackoverflow.com/questions/1489183/how-can-i-use-ruby-to-colorize-the-text-output-to-a-terminal
 
 class String
