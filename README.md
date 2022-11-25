@@ -1,7 +1,7 @@
 # Chess
-A 2 player command-line chess game made using Ruby. It implements all the functionality and rules of chess. If you aern't familiar with the rules, [this](https://en.wikipedia.org/wiki/Chess) might help.
+A 2 player command-line chess game made using Ruby. It implements all the functionality and rules of chess. If you aern't familiar with the rules, [this](https://en.wikipedia.org/wiki/Chess) might help. You can run this program on Replit:
 <br><br>
-Run `main.rb` to play!
+[![Run on Repl.it](https://replit.com/badge/github/Mohammad4844/Chess)](https://replit.com/new/github/Mohammad4844/Chess)
 <br>
 ## Features/Rules implemented
 - A command-line display of the board
